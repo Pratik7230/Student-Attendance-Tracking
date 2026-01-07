@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="180" height="50" version="1.1" xml:space="preserve">
+ <desc>Created with Fabric.js 5.2.4</desc>
+
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="22a00d4e-5407-4e8f-a3cc-d4e769d3b206" transform="matrix(1 0 0 1 90 25)">
+   <rect fill="rgb(255,255,255)" fill-rule="nonzero" height="50" id="svg_1" stroke-dashoffset="0" stroke-miterlimit="4" width="180" x="-90.24" y="-24.51"/>
+  </g>
+  <g id="7225e15b-e38d-4635-b229-060da489d9a3" transform="matrix(Infinity NaN NaN Infinity 0 0)"/>
+  <g id="baceb634-f702-45fc-87c5-b516776ca485" transform="matrix(1 0 0 1 0 0) matrix(0.122752 0 0 0.0445328 1907.79 240.096)">
+   <rect fill="rgb(255,255,255)" fill-rule="nonzero" height="1080" id="svg_4" stroke-dashoffset="0" stroke-miterlimit="4" width="1080" x="-15536.02" y="-5363.79"/>
+  </g>
+  <g id="svg_5" transform="matrix(1 0 0 1 0 0) matrix(1.76882 0 0 0.427514 2857.51 236.453)">
+   <path d="m-1519.65,-465.27c-3.26,5.86 -9.89,8.65 -16.59,8.65l-26.9,0c28,-3.5 47.5,-17.5 50,-37c2.5,19.5 22,33.5 50,37l-26.9,0c-6.7,0 -13.33,-2.79 -16.59,-8.65c-3.52,-6.34 -5.77,-13.52 -6.51,-21.35c-0.74,7.83 -2.99,15.01 -6.51,21.35z" fill="rgb(26,70,136)" fill-rule="nonzero" id="svg_6" stroke-dashoffset="0" stroke-miterlimit="4" transform="translate(-52 -28.5)"/>
+  </g>
+  <g id="svg_7" transform="matrix(0.576989 0 0 0.452997 978.558 248.531)">
+   <path d="m-1511.52,-487.88c-1.58,0.89 -3.23,1.72 -4.96,2.49c-0.98,-3.39 -1.34,-6.96 -1.05,-10.5c0.38,-4.7 1.89,-9.22 4.38,-13.18c2.5,-3.95 5.92,-7.22 9.95,-9.5c4.02,-2.28 8.54,-3.51 13.14,-3.59c4.61,-0.07 9.16,1.02 13.25,3.18c4.1,2.16 7.61,5.31 10.22,9.19c2.62,3.87 4.26,8.35 4.78,13.03c0.43,3.83 0.09,7.69 -0.97,11.37c-1.73,-0.77 -3.38,-1.6 -4.96,-2.49c0.67,-2.69 0.85,-5.48 0.54,-8.25c-0.42,-3.78 -1.74,-7.39 -3.85,-10.51c-2.11,-3.13 -4.94,-5.67 -8.24,-7.41c-3.3,-1.74 -6.97,-2.62 -10.68,-2.56c-3.72,0.05 -7.36,1.05 -10.61,2.89c-3.24,1.84 -6,4.47 -8.01,7.66c-2.02,3.19 -3.23,6.84 -3.54,10.63c-0.21,2.54 0,5.09 0.61,7.55z" fill="rgb(72,69,210)" fill-rule="nonzero" id="svg_8" stroke-dashoffset="0" stroke-miterlimit="4" transform="translate(-52 -20.38)"/>
+  </g>
+  <g id="86620080" transform="matrix(1 0 0 1 0 0) matrix(0.17793 0 0 0.126638 2828.45 642.029)">
+   <text fill="rgb(72,69,210)" fill-rule="nonzero" font-family="Alegreya" font-size="109" font-style="normal" font-weight="900" id="svg_9" stroke-dashoffset="0" stroke-miterlimit="4" x="-15391.91" xml:space="preserve" y="-4773.05">
+    <tspan id="svg_10" x="-15874.24" y="-4738.81">Students Attendance</tspan>
+   </text>
+  </g>
+ </g>
+</svg>
