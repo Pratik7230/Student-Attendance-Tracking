@@ -88,14 +88,14 @@ function StudentListTable({ studentList, refreshData }) {
   }
   
   return (
-    <div className='my-7'>
-      <div className='ag-theme-quartz'
-        style={{ height: 500 }}
+    <div className='my-4 md:my-7'>
+      <div className='ag-theme-quartz w-full overflow-auto'
+        style={{ height: 'calc(100vh - 300px)', minHeight: 400, maxHeight: 600 }}
       >
-        <div className='p-2 rounded-lg border shadow-sm flex gap-2 mb-4 max-w-sm'>
-          <Search />
+        <div className='p-2 rounded-lg border shadow-sm flex gap-2 mb-4 w-full max-w-sm'>
+          <Search className="h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
           <input type='text' placeholder='Search on Anything.....'
-            className='outline-none w-full'
+            className='outline-none w-full text-sm md:text-base'
             onChange={(event) => setSearchInput(event.target.value)}
           />
         </div>

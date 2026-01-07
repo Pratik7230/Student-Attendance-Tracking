@@ -20,13 +20,17 @@ function Student() {
   }
 
   return (
-    <div className='p-7'>
-        <h2 className='font-bold text-2xl flex 
-        justify-between items-center'>Students
-        <AddNewStudent refreshData={GetAllStudents}/>
+    <div className='p-3 md:p-7'>
+        <h2 className='font-bold text-xl md:text-2xl flex flex-col sm:flex-row
+        justify-between items-start sm:items-center gap-3 mb-4'>Students
+        <div className="w-full sm:w-auto">
+          <AddNewStudent refreshData={GetAllStudents}/>
+        </div>
         </h2>
-        <StudentListTable studentList={studentList}
-        refreshData={GetAllStudents}/>
+        <div className="overflow-x-auto">
+          <StudentListTable studentList={studentList}
+          refreshData={GetAllStudents}/>
+        </div>
     </div>
     
   )

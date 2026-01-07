@@ -88,7 +88,7 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId, selectedGrad
   };
 
   return (
-    <div className='ag-theme-quartz' style={{ height: 500 }}>
+    <div className='ag-theme-quartz w-full overflow-auto' style={{ height: 'calc(100vh - 300px)', minHeight: 400, maxHeight: 600 }}>
       <AgGridReact
         rowData={rowData}
         columnDefs={colDefs}

@@ -26,25 +26,29 @@ function Attendance() {
   };
 
   return (
-    <div className="p-10">
-      <h2 className="text-2xl font-bold">Attendance</h2>
+    <div className="p-3 md:p-10">
+      <h2 className="text-xl md:text-2xl font-bold mb-4">Attendance</h2>
 
       {/* Search Options */}
-      <div className="flex gap-5 my-5 p-5 border rounded-lg shadow-sm">
-        <div className="flex gap-2 items-center">
-          <label>Select Month:</label>
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-5 my-3 md:my-5 p-3 md:p-5 border rounded-lg shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+          <label className="text-sm md:text-base whitespace-nowrap">Select Month:</label>
           <MonthSelection selectedMonth={(value) => setSelectedMonth(value)} />
         </div>
 
-        <div className="flex gap-2 items-center">
-          <label>Select Subject:</label>
-          <StudentSubjectSelect selectedSubjectId={(v) => setSelectedSubjectId(v)} /> {/* ✅ Fix: Correct function */}
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+          <label className="text-sm md:text-base whitespace-nowrap">Select Subject:</label>
+          <StudentSubjectSelect selectedSubjectId={(v) => setSelectedSubjectId(v)} />
         </div>
 
-        <Button onClick={onSearchHandler}>Search</Button>
+        <div className="w-full sm:w-auto">
+          <Button onClick={onSearchHandler} className="w-full sm:w-auto text-sm md:text-base">Search</Button>
+        </div>
       </div>
 
-      <AttendanceGrid attendanceList={attendanceList} selectedMonth={selectedMonth} />
+      <div className="overflow-x-auto">
+        <AttendanceGrid attendanceList={attendanceList} selectedMonth={selectedMonth} />
+      </div>
     </div>
   );
 }

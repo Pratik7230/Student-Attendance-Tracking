@@ -204,24 +204,24 @@ function AdminPage() {
 
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
+    <div className="p-3 md:p-6 bg-gray-100 min-h-screen">
+      <h1 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Admin Panel</h1>
 
-      <div className="flex space-x-4 mb-4">
+      <div className="flex flex-wrap gap-2 md:gap-4 mb-3 md:mb-4">
         <Dialog open={openUserDialog} onOpenChange={setOpenUserDialog}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4" /> Add User
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-[95vw] md:max-w-md">
             <DialogTitle>Add Admin/Teacher</DialogTitle>
-            <form onSubmit={handleSubmit(addUser)} className="space-y-4">
-              <Input placeholder="Name" {...register("name", { required: true })} />
-              <Input placeholder="Email" {...register("email", { required: true })} />
-              <Input placeholder="Password" type="password" {...register("password", { required: true })} />
+            <form onSubmit={handleSubmit(addUser)} className="space-y-3 md:space-y-4">
+              <Input placeholder="Name" {...register("name", { required: true })} className="text-sm md:text-base" />
+              <Input placeholder="Email" {...register("email", { required: true })} className="text-sm md:text-base" />
+              <Input placeholder="Password" type="password" {...register("password", { required: true })} className="text-sm md:text-base" />
               <Select onValueChange={(value) => setValue("role", value)}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full text-sm md:text-base">
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
@@ -232,7 +232,7 @@ function AdminPage() {
                   <SelectItem value="6">Principal</SelectItem>
                 </SelectContent>
               </Select>
-              <Button type="submit">Add User</Button>
+              <Button type="submit" className="w-full text-sm md:text-base">Add User</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -260,9 +260,9 @@ function AdminPage() {
             <Eye className="w-4 h-4" /> View Students
           </Button>
           <Dialog open={openViewDialog} onOpenChange={setOpenViewDialog}>
-            <DialogContent className="max-w-4xl h-[500px]">
+            <DialogContent className="max-w-[95vw] md:max-w-4xl h-[80vh] md:h-[500px]">
               <DialogTitle>View Students</DialogTitle>
-              <div className="ag-theme-quartz" style={{ height: 400 }}>
+              <div className="ag-theme-quartz w-full overflow-auto" style={{ height: 'calc(80vh - 100px)', minHeight: 300 }}>
                 <AgGridReact
                   rowData={rowData} // Pass rowData to the grid
                   columnDefs={colDefs}
@@ -283,7 +283,7 @@ function AdminPage() {
 
       </div>
       {/* Data Table */}
-      <div className="ag-theme-quartz" style={{ height: 500 }}>
+      <div className="ag-theme-quartz w-full overflow-auto" style={{ height: 'calc(100vh - 250px)', minHeight: 400, maxHeight: 600 }}>
         <AgGridReact
           rowData={users}
           columnDefs={[

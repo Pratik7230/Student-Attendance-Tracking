@@ -37,39 +37,42 @@ function GenerateReport() {
   };
 
   return (
-    <div className="p-10">
-      <h2 className="text-2xl font-bold">Generate Report</h2>
+    <div className="p-3 md:p-10">
+      <h2 className="text-xl md:text-2xl font-bold mb-4">Generate Report</h2>
 
       <div>
-        <div className="flex gap-5 my-5 p-5 border rounded-lg shadow-sm">
-          <div className="flex gap-2 items-center">
-            <label>Select Start Month:</label>
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-5 my-3 md:my-5 p-3 md:p-5 border rounded-lg shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+            <label className="text-sm md:text-base whitespace-nowrap">Select Start Month:</label>
             <MonthSelection selectedMonth={(value) => setSelectedStartMonth(value)} />
           </div>
 
-          <div className="flex gap-2 items-center">
-            <label>Select End Month:</label>
+          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+            <label className="text-sm md:text-base whitespace-nowrap">Select End Month:</label>
             <MonthSelection selectedMonth={(value) => setSelectedEndMonth(value)} />
           </div>
 
-
-          <div className="flex gap-2 items-center">
-            <label>Select Subject:</label>
+          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+            <label className="text-sm md:text-base whitespace-nowrap">Select Subject:</label>
             <TeacherSubjectSelect selectedSubjectId={(v) => setSelectedSubjectId(v)} />
           </div>
 
-
-          <div className="flex gap-2 items-center">
-            <label>Select Grade:</label>
+          <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+            <label className="text-sm md:text-base whitespace-nowrap">Select Grade:</label>
             <GradeSelect selectedSubjectId={selectedSubjectId} selectedGrade={(v) => setSelectedGrade(v)} />
-
-            <AnimatedSpin loading={loading}>
-            <Button disabled={!(selectedSubjectId && selectedGrade && selectedStartMonth <= selectedEndMonth)} onClick={onSearchHandler}>Generate</Button>
-          </AnimatedSpin>
           </div>
-          
 
-
+          <div className="w-full sm:w-auto">
+            <AnimatedSpin loading={loading}>
+              <Button 
+                disabled={!(selectedSubjectId && selectedGrade && selectedStartMonth <= selectedEndMonth)} 
+                onClick={onSearchHandler}
+                className="w-full sm:w-auto text-sm md:text-base"
+              >
+                Generate
+              </Button>
+            </AnimatedSpin>
+          </div>
         </div>
       </div>
     </div >

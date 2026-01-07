@@ -45,21 +45,23 @@ export default function UnAuthorized() {
   }, []);
 
   if (loading) {
-    return <div className="p-10 text-center"><p>Loading...</p></div>;
+    return <div className="p-4 md:p-10 text-center"><p className="text-sm md:text-base">Loading...</p></div>;
   }
 
   return (
-    <div className="p-10 text-center">
-      <h2 className="text-2xl font-bold text-red-600">Access Denied</h2>
-      <p className="text-gray-600">You do not have permission to view this page.</p>
+    <div className="p-4 md:p-10 text-center">
+      <h2 className="text-xl md:text-2xl font-bold text-red-600 mb-2">Access Denied</h2>
+      <p className="text-sm md:text-base text-gray-600 mb-4">You do not have permission to view this page.</p>
 
       {user && (
-        <div className="mt-4 p-4 border rounded-lg">
-          <h3 className="text-lg font-semibold">User Details</h3>
-          <p><strong>Name:</strong> {decodedUser?.given_name} {decodedUser?.family_name}</p>
-          <p><strong>Email:</strong> {decodedUser?.email || user.email}</p>
-          <p><strong>Roles:</strong> {roles.length > 0 ? roles.join(", ") : "No roles assigned"}</p>
-          <p><strong>Decoded Role ID:</strong> {decodedUser?.role_id || "N/A"}</p>
+        <div className="mt-4 p-3 md:p-4 border rounded-lg max-w-2xl mx-auto text-left">
+          <h3 className="text-base md:text-lg font-semibold mb-2">User Details</h3>
+          <div className="space-y-1 text-sm md:text-base">
+            <p><strong>Name:</strong> {decodedUser?.given_name} {decodedUser?.family_name}</p>
+            <p><strong>Email:</strong> {decodedUser?.email || user.email}</p>
+            <p><strong>Roles:</strong> {roles.length > 0 ? roles.join(", ") : "No roles assigned"}</p>
+            <p><strong>Decoded Role ID:</strong> {decodedUser?.role_id || "N/A"}</p>
+          </div>
         </div>
       )}
     </div>

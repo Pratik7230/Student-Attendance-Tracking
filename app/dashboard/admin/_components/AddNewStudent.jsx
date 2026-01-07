@@ -61,28 +61,31 @@ function AddNewStudent({ refreshData }) {
         <div>
             <Button onClick={() => setOpen(true)}>+ Add New Student</Button>
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent>
+                <DialogContent className="max-w-[95vw] md:max-w-md max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
-                        <DialogTitle>Add New Student</DialogTitle>
+                        <DialogTitle className="text-lg md:text-xl">Add New Student</DialogTitle>
                         <DialogDescription>
-                            <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className='py-2'>
-                                    <label>Full Name</label>
+                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 md:space-y-4">
+                                <div className='py-1 md:py-2'>
+                                    <label className="text-sm md:text-base block mb-1">Full Name</label>
                                     <Input placeholder='Ex. Pratik Patil'
                                         {...register('name', { required: true })}
+                                        className="text-sm md:text-base"
                                     />
                                 </div>
 
-                                <div className='py-2'>
-                                    <label>Email</label>
+                                <div className='py-1 md:py-2'>
+                                    <label className="text-sm md:text-base block mb-1">Email</label>
                                     <Input type="email" placeholder='Ex. example@gmail.com'
-                                        {...register('email', { required: true })} />
-                                    {errors.email && <p className="text-red-500 text-sm">Valid email is required.</p>}
+                                        {...register('email', { required: true })}
+                                        className="text-sm md:text-base"
+                                    />
+                                    {errors.email && <p className="text-red-500 text-xs md:text-sm mt-1">Valid email is required.</p>}
                                 </div>
 
-                                <div className='flex flex-col py-2'>
-                                    <label>Select Grade</label>
-                                    <select className='p-3 border rounded-lg'
+                                <div className='flex flex-col py-1 md:py-2'>
+                                    <label className="text-sm md:text-base block mb-1">Select Grade</label>
+                                    <select className='p-2 md:p-3 border rounded-lg text-sm md:text-base'
                                         {...register('gradeId', { required: true })}>
                                         {grades.map((item, index) => (
                                             <option key={index} value={item.id}>{item.grade}</option>
@@ -90,23 +93,27 @@ function AddNewStudent({ refreshData }) {
                                     </select>
                                 </div>
 
-                                <div className='py-2'>
-                                    <label>Contact Number</label>
+                                <div className='py-1 md:py-2'>
+                                    <label className="text-sm md:text-base block mb-1">Contact Number</label>
                                     <Input type="number" placeholder='Ex. 9876543210'
-                                        {...register('contact')} />
+                                        {...register('contact')}
+                                        className="text-sm md:text-base"
+                                    />
                                 </div>
 
-                                <div className='py-2'>
-                                    <label>Address</label>
+                                <div className='py-1 md:py-2'>
+                                    <label className="text-sm md:text-base block mb-1">Address</label>
                                     <Input placeholder='525, Address...'
-                                        {...register('address')} />
+                                        {...register('address')}
+                                        className="text-sm md:text-base"
+                                    />
                                 </div>
 
-                                <div className='flex gap-3 items-center justify-end mt-5'>
-                                    <Button type="button" onClick={() => setOpen(false)} variant="ghost">
+                                <div className='flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center justify-end mt-4 md:mt-5'>
+                                    <Button type="button" onClick={() => setOpen(false)} variant="ghost" className="w-full sm:w-auto text-sm md:text-base">
                                         Cancel
                                     </Button>
-                                    <Button type="submit" disabled={loading}>
+                                    <Button type="submit" disabled={loading} className="w-full sm:w-auto text-sm md:text-base">
                                         {loading ? <LoaderIcon className='animate-spin' /> : 'Save'}
                                     </Button>
                                 </div>

@@ -52,10 +52,10 @@ function Dashboard() {
 
 
   return (
-    <div className='p-10'>
-      <div className='flex items-center justify-between'>
-        <h2 className='font-bold text-2xl'>Dashboard</h2>
-        <div className='flex items-center gap-4'>
+    <div className='p-3 md:p-10'>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4 mb-4'>
+        <h2 className='font-bold text-xl md:text-2xl'>Dashboard</h2>
+        <div className='flex flex-wrap items-center gap-2 md:gap-4 w-full md:w-auto'>
           <MonthSelection selectedMonth={setSelectedMonth} />
           <TeacherSubjectSelect selectedSubjectId={setSelectedSubjectId} />
           <GradeSelect selectedSubjectId={selectedSubjectId} selectedGrade={setSelectedGradeId} />
@@ -63,26 +63,30 @@ function Dashboard() {
       </div>
       {
         loading ?
-          <Skeleton className="w-[100%] h-[60px] m-2"></Skeleton>
+          <Skeleton className="w-full h-[60px] mb-3 md:mb-4"></Skeleton>
           :
           <StatusList attendanceList={attendanceList} />
       }
 
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-4'>
         <div className='md:col-span-2'>
           {
             loading ?
-              <Skeleton className="w-[100%] h-[300px]  m-2"></Skeleton>
-              : <BarChartComponent attendanceList={attendanceList}
-                totalPresentData={totalPresentData} />
+              <Skeleton className="w-full h-[250px] md:h-[300px]"></Skeleton>
+              : <div className="overflow-x-auto">
+                  <BarChartComponent attendanceList={attendanceList}
+                    totalPresentData={totalPresentData} />
+                </div>
           }
 
         </div>
         <div>
           {
             loading ?
-              <Skeleton className="w-[100%] h-[300px] m-2"></Skeleton>
-              : <PieChartComponent attendanceList={attendanceList} />
+              <Skeleton className="w-full h-[250px] md:h-[300px]"></Skeleton>
+              : <div className="overflow-x-auto">
+                  <PieChartComponent attendanceList={attendanceList} />
+                </div>
           }
 
         </div>

@@ -23,10 +23,10 @@ export default function Settings() {
   }
   return (
     
-    <div className="p-10">
-      <h2 className="text-2xl font-bold">Settings</h2>
+    <div className="p-3 md:p-10">
+      <h2 className="text-xl md:text-2xl font-bold mb-4">Settings</h2>
 
-      <div className="p-5 flex justify-end">
+      <div className="p-3 md:p-5 flex justify-end">
         <AlertDialog open={open} onOpenChange={setOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="destructive"  onClick={() => setOpen(true)}>Log out</Button>

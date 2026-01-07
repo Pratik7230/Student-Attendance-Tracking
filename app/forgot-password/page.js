@@ -61,23 +61,23 @@ export default function ForgotPassword() {
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-xl">
-       <h2 class="text-2xl font-bold text-center"style={{ color: "black" }}>Forgot Password</h2>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-8">
+      <div className="w-full max-w-md p-4 md:p-8 space-y-4 md:space-y-6 bg-white shadow-lg rounded-xl">
+       <h2 className="text-xl md:text-2xl font-bold text-center" style={{ color: "black" }}>Forgot Password</h2>
 
         {step === 1 && (
-          <form onSubmit={handleSubmit(handleEmailSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(handleEmailSubmit)} className="space-y-3 md:space-y-4">
             <div>
-              <label className="block text-sm font-medium">Email</label>
+              <label className="block text-sm font-medium mb-1">Email</label>
               <Input
                 disabled={loading}
                 type="email"
                 {...register("email", { required: "Email is required" })}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:ring-2 focus:ring-blue-500"
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.email.message}</p>}
             </div>
-            <Button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+            <Button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-2 text-sm md:text-base rounded-md hover:bg-blue-700">
               <AnimatedSpin loading={loading}>
                 Send OTP
               </AnimatedSpin>
@@ -86,18 +86,18 @@ export default function ForgotPassword() {
         )}
 
         {step === 2 && (
-          <form onSubmit={handleSubmit(handleOtpSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(handleOtpSubmit)} className="space-y-3 md:space-y-4">
             <div>
-              <label className="block text-sm font-medium">Enter OTP</label>
+              <label className="block text-sm font-medium mb-1">Enter OTP</label>
               <Input
                 disabled={loading}
                 type="text"
                 {...register("otp", { required: "OTP is required" })}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:ring-2 focus:ring-blue-500"
               />
-              {errors.otp && <p className="text-red-500 text-sm">{errors.otp.message}</p>}
+              {errors.otp && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.otp.message}</p>}
             </div>
-            <Button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+            <Button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-2 text-sm md:text-base rounded-md hover:bg-blue-700">
               <AnimatedSpin loading={loading}>
                 Verify OTP
               </AnimatedSpin>
@@ -106,20 +106,20 @@ export default function ForgotPassword() {
         )}
 
         {step === 3 && (
-          <form onSubmit={handleSubmit(handlePasswordSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(handlePasswordSubmit)} className="space-y-3 md:space-y-4">
             <div>
-              <label className="block text-sm font-medium">New Password</label>
+              <label className="block text-sm font-medium mb-1">New Password</label>
               <Input
                 disabled={loading}
                 type="password"
                 {...register("password", { required: "Password is required" })}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:ring-2 focus:ring-blue-500"
               />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+              {errors.password && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.password.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium">Confirm Password</label>
+              <label className="block text-sm font-medium mb-1">Confirm Password</label>
               <Input
                 disabled={loading}
                 type="password"
@@ -127,12 +127,12 @@ export default function ForgotPassword() {
                   required: "Confirm Password is required",
                   validate: (value) => value === watch("password") || "Passwords do not match"
                 })}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:ring-2 focus:ring-blue-500"
               />
-              {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+              {errors.confirmPassword && <p className="text-red-500 text-xs md:text-sm mt-1">{errors.confirmPassword.message}</p>}
             </div>
 
-            <Button disabled={loading} type="submit" className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">
+            <Button disabled={loading} type="submit" className="w-full bg-green-600 text-white py-2 text-sm md:text-base rounded-md hover:bg-green-700">
               <AnimatedSpin loading={loading}>
                 Submit
               </AnimatedSpin>
