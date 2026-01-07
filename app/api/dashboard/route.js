@@ -2,6 +2,7 @@ import { db } from "@/utils";
 import { ATTENDANCE, STUDENTS } from "@/utils/schema";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import "@/lib/cron"; // Initialize cron job to keep database alive
 
 export async function GET(req) {
     const searchParams=req.nextUrl.searchParams;
