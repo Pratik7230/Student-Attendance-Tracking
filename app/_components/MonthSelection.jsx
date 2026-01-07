@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Popover,
   PopoverContent,
@@ -13,11 +13,17 @@ import { Calendar } from "@/components/ui/calendar"
 
 
 
-function MonthSelection({selectedMonth}) {
-  const today = new Date();
-
-  const nextMonths = addMonths(new Date(), 0);
+function MonthSelection({selectedMonth, defaultMonth}) {
+  const nextMonths = defaultMonth || addMonths(new Date(), 0);
   const [month, setMonth] = useState(nextMonths);
+  
+  // Call selectedMonth callback on mount if defaultMonth is provided
+  useEffect(() => {
+    if (defaultMonth && selectedMonth) {
+      selectedMonth(defaultMonth);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <Popover>

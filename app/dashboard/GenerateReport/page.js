@@ -10,8 +10,11 @@ import AnimatedSpin from "@/app/_components/AnimatedSpin";
 import { Tooltip } from "recharts";
 
 function GenerateReport() {
-  const [selectedStartMonth, setSelectedStartMonth] = useState();
-  const [selectedEndMonth, setSelectedEndMonth] = useState();
+  // Initialize with current month for both start and end dates
+  const currentMonth = moment().startOf('month').toDate();
+  
+  const [selectedStartMonth, setSelectedStartMonth] = useState(currentMonth);
+  const [selectedEndMonth, setSelectedEndMonth] = useState(currentMonth);
   const [selectedGrade, setSelectedGrade] = useState();
   const [selectedSubjectId, setSelectedSubjectId] = useState();
   const [loading, setLoading] = useState();
@@ -44,12 +47,12 @@ function GenerateReport() {
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-5 my-3 md:my-5 p-3 md:p-5 border rounded-lg shadow-sm">
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
             <label className="text-sm md:text-base whitespace-nowrap">Select Start Month:</label>
-            <MonthSelection selectedMonth={(value) => setSelectedStartMonth(value)} />
+            <MonthSelection defaultMonth={selectedStartMonth} selectedMonth={(value) => setSelectedStartMonth(value)} />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
             <label className="text-sm md:text-base whitespace-nowrap">Select End Month:</label>
-            <MonthSelection selectedMonth={(value) => setSelectedEndMonth(value)} />
+            <MonthSelection defaultMonth={selectedEndMonth} selectedMonth={(value) => setSelectedEndMonth(value)} />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">

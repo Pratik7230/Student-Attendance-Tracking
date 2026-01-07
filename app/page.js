@@ -16,8 +16,8 @@ import { Moon, Sun } from "lucide-react";
 
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("Teacher@gmail.com");
+  const [password, setPassword] = useState("Teacher#1234");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState("");
