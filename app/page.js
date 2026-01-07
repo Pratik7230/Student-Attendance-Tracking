@@ -20,6 +20,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
   const { theme, setTheme } = useTheme();
 
@@ -31,6 +32,9 @@ export default function Home() {
     if (event) {
       event.preventDefault();
     }
+    // Clear previous errors
+    setError("");
+    
     const obj = {
       email,
       password
@@ -51,8 +55,21 @@ export default function Home() {
       }
       router.push(route.path)
     })
-      .catch(() => {
-        toast.error("Invalid Credentials")
+      .catch((err) => {
+        // Check the error response status to show specific error messages
+        const status = err?.response?.status;
+        const errorMessage = err?.response?.data?.error;
+        
+        if (status === 404 || errorMessage === "User not found") {
+          setError("User not found");
+          toast.error("User not found");
+        } else if (status === 401 || errorMessage === "Invalid credentials") {
+          setError("Invalid password");
+          toast.error("Invalid password");
+        } else {
+          setError("Invalid credentials");
+          toast.error("Invalid credentials");
+        }
       })
       .finally(() => {
         setLoading(false)
@@ -102,10 +119,18 @@ export default function Home() {
               name="email"
               value={email}
               disabled={loading}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(""); // Clear error when user types
+              }}
               required
-              className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className={`w-full px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                error && (error === "User not found") ? "border-red-500 focus:ring-red-500" : ""
+              }`}
             />
+            {error && error === "User not found" && (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+            )}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
@@ -114,10 +139,18 @@ export default function Home() {
               name="password"
               disabled={loading}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError(""); // Clear error when user types
+              }}
               required
-              className="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className={`w-full px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white ${
+                error && (error === "Invalid password") ? "border-red-500 focus:ring-red-500" : ""
+              }`}
             />
+            {error && error === "Invalid password" && (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+            )}
           </div>
           <Button
             type="submit"
