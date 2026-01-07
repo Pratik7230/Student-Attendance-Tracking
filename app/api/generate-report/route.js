@@ -260,6 +260,7 @@ const isPresent = (attendanceList, studentId, day) => {
 
 function filterByDateRange(data, from, to) {
   const parseDate = (str) => {
+    if (!str) return null;
     const [month, year] = str.split("/");
     return new Date(`${year}-${month}-01`);
   };
@@ -268,14 +269,17 @@ function filterByDateRange(data, from, to) {
   const toDate = parseDate(to);
 
   return data.filter(item => {
+    if (!item.date) return false;
     const itemDate = parseDate(item.date);
-    return itemDate >= fromDate && itemDate <= toDate;
+    return itemDate && itemDate >= fromDate && itemDate <= toDate;
   });
 }
 
 function groupByDate(data) {
   return data.reduce((acc, item) => {
-    (acc[item.date] = acc[item.date] || []).push(item);
+    if (item.date) {
+      (acc[item.date] = acc[item.date] || []).push(item);
+    }
     return acc;
   }, {});
 }
@@ -287,6 +291,14 @@ export async function GET(req) {
     const from = searchParams.get("from");
     const to = searchParams.get("to");
     const selectedSubjectId = searchParams.get("selectedSubjectId");
+
+    // Validate required parameters
+    if (!gradeId || !from || !to || !selectedSubjectId) {
+      return new Response(JSON.stringify({ error: "Missing required parameters" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const subject = await db.select({ name: SUBJECTS.name })
       .from(SUBJECTS)
@@ -357,12 +369,22 @@ export async function GET(req) {
     <body>`
 
     const groupedData = groupByDate(result);
+    
+    // Check if there's any data to process
+    if (Object.keys(groupedData).length === 0) {
+      return new Response(JSON.stringify({ error: "No attendance data found for the selected date range" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     for (const key in groupedData) {
       if (Object.prototype.hasOwnProperty.call(groupedData, key)) {
+        const [month, year] = key.split("/");
         const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
-        const numberOfDays = daysInMonth(Number(key.split("/")[1]), Number(key.split("/")[0]));
+        const numberOfDays = daysInMonth(Number(year), Number(month));
         const daysArrays = Array.from({ length: numberOfDays }, (_, i) => i + 1)
-          .filter(day => new Date(Number(key.split("/")[1]), Number(key.split("/")[0]) - 1, day).getDay() !== 0); // Skip Sundays
+          .filter(day => new Date(Number(year), Number(month) - 1, day).getDay() !== 0); // Skip Sundays
 
         const uniqueStudents = getUniqueRecord(groupedData[key]);
         uniqueStudents.forEach((obj) => {
@@ -403,7 +425,7 @@ export async function GET(req) {
                     `).join("")}
                     <td><b>${student.totalP}</b></td>
                     <td><b>${student.totalA}</b></td>
-                    <td><b></td>
+                    <td></td>
                 </tr>
             `).join("")}
         </table>
@@ -416,15 +438,30 @@ export async function GET(req) {
     }
     html += `</body></html>`;
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({ format: "A4", landscape: true, printBackground: true, margin: { top: "10mm", right: "10mm", bottom: "10mm", left: "5mm" } });
+    const pdfBuffer = await page.pdf({ 
+      format: "A4", 
+      landscape: true, 
+      printBackground: true, 
+      margin: { top: "10mm", right: "10mm", bottom: "10mm", left: "5mm" } 
+    });
     await browser.close();
 
     return new Response(pdfBuffer, { status: 200, headers: { "Content-Type": "application/pdf", "Content-Disposition": "attachment; filename=attendance_report.pdf" } });
   } catch (error) {
     console.error("Error generating PDF:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), { status: 500, headers: { "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ 
+      error: "Internal Server Error", 
+      message: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }), { 
+      status: 500, 
+      headers: { "Content-Type": "application/json" } 
+    });
   }
 }
