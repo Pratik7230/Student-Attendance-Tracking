@@ -60,7 +60,7 @@ export const NAVIGATION_ROUTES = [
 
 
 export const ROUTE_ACCESS = {
-    [ROLE_IDS.ADMIN]: [1, 2, 3, 4, 7],
+    [ROLE_IDS.ADMIN]: [1, 2, 7],
     [ROLE_IDS.TEACHER]: [5, 3, 4, 7],
     [ROLE_IDS.STUDENT]: [6, 7]
 }

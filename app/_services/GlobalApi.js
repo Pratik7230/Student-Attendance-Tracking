@@ -38,6 +38,8 @@ const GenerateOTP = ({ email }) => axios.post('/api/reset-password-generate-otp'
 const ValidateOTP = ({ email, otp }) => axios.post('/api/reset-password-validate-otp', { email, otp });
 const ResetPasswordWithOTP = ({ email, otp, password }) =>
     axios.post('/api/reset-password', { email, otp, password });
+const ChangePassword = ({ currentPassword, newPassword }) =>
+    axios.post('/api/change-password', { currentPassword, newPassword });
 
 const UpdateUserRole = (id, role) => axios.put(`/api/user?id=${id}`, { role });
 const GetAllSubjects = () => axios.get('/api/subjects');
@@ -63,6 +65,7 @@ export default {
     GenerateOTP,
     ValidateOTP,
     ResetPasswordWithOTP,
+    ChangePassword,
     GetUsers,
     AddUser,
     DeleteUser,
