@@ -76,7 +76,7 @@ export default function Settings() {
             </div>
             <Dialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline">Change Password</Button>
+                <Button variant="outline" disabled>Change Password</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>

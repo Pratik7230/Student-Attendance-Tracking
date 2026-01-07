@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./ThemeProvider";
 import { Toaster } from "sonner";
+import MobileAlert from "./_components/MobileAlert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             <Toaster />
+            <MobileAlert />
         {children}
         </ThemeProvider>
         </body>
