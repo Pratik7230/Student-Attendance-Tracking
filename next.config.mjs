@@ -4,6 +4,9 @@ const nextConfig = {
       domains: ['gravatar.com', 'lh3.googleusercontent.com'],
     },
     // Exclude puppeteer/chromium from serverless bundle for Vercel
+    experimental: {
+      serverComponentsExternalPackages: ['puppeteer-core', '@sparticuz/chromium', 'puppeteer'],
+    },
     webpack: (config, { isServer }) => {
       if (isServer) {
         config.externals.push(
