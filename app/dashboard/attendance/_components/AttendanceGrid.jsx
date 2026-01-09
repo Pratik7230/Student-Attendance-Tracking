@@ -7,13 +7,25 @@ import GlobalApi from '@/app/_services/GlobalApi';
 import { toast } from 'sonner';
 import { getUniqueRecord } from '@/app/_services/service';
 
-const pagination = true;
 const paginationPageSize = 10;
 const paginationPageSizeSelector = [25, 50, 75, 100];
 
 function AttendanceGrid({ attendanceList, selectedMonth, subjectId, selectedGradeId }) {
   const [rowData, setRowData] = useState([]);
   const [colDefs, setColDefs] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen size for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const numberOfDays = useMemo(() => {
     const year = moment(selectedMonth).format('YYYY');
@@ -95,7 +107,7 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId, selectedGrad
         onCellValueChanged={({ colDef, data, newValue }) =>
           onMarkAttendance(Number(colDef.field), data.studentId, newValue)
         }
-        pagination={pagination}
+        pagination={!isMobile}
         paginationPageSize={paginationPageSize}
         paginationPageSizeSelector={paginationPageSizeSelector}
       />

@@ -67,10 +67,22 @@ function AdminPage() {
 
   const [rowData, setRowData] = useState([]); // Initialize rowData as an empty array
   const [searchInput, setSearchInput] = useState();
+  const [isMobile, setIsMobile] = useState(false);
 
-  const pagination = true;
   const paginationPageSize = 10;
   const paginationPageSizeSelector = [25, 50, 75, 100];
+
+  // Detect screen size for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     fetchUsers();
@@ -266,7 +278,7 @@ function AdminPage() {
                 <AgGridReact
                   rowData={rowData} // Pass rowData to the grid
                   columnDefs={colDefs}
-                  pagination={pagination}
+                  pagination={!isMobile}
                   quickFilterText={searchInput}
                   paginationPageSize={paginationPageSize}
                   paginationPageSizeSelector={paginationPageSizeSelector}
@@ -319,7 +331,7 @@ function AdminPage() {
               ),
             },
           ]}
-          pagination
+          pagination={!isMobile}
           paginationPageSize={10}
         />
       </div>

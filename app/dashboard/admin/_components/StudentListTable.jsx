@@ -19,11 +19,23 @@ import GlobalApi from '@/app/_services/GlobalApi';
 import { toast } from 'sonner';
 
 
-const pagination = true;
 const paginationPageSize = 10;
 const paginationPageSizeSelector = [25, 50, 75, 100];
 
 function StudentListTable({ studentList, refreshData }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen size for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const CustomButtons = (props) => {
     return (
@@ -102,7 +114,7 @@ function StudentListTable({ studentList, refreshData }) {
         <AgGridReact
           rowData={rowData}
           columnDefs={colDefs}
-          pagination={pagination}
+          pagination={!isMobile}
           quickFilterText={searchInput}
           paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={paginationPageSizeSelector}

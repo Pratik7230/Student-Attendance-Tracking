@@ -95,3 +95,105 @@
 .avatar-border{
   border: 1px solid purple;
 }
+
+/* AG Grid Pagination Mobile Alignment Fix */
+@media (max-width: 768px) {
+  /* Pagination panel container */
+  .ag-paging-panel {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 4px !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Row summary panel */
+  .ag-paging-row-summary-panel {
+    order: 1 !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    flex: 0 0 100% !important;
+  }
+
+  /* Page summary panel */
+  .ag-paging-page-summary-panel {
+    order: 2 !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    flex: 0 0 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+
+  /* Page description - ensure visibility on mobile */
+  .ag-paging-description {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Ensure page summary panel shows description */
+  .ag-paging-page-summary-panel .ag-paging-description {
+    display: inline-block !important;
+    width: auto !important;
+    min-width: fit-content !important;
+  }
+
+  /* Pagination controls container */
+  .ag-paging-button-container {
+    order: 3 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    margin-top: 4px !important;
+  }
+
+  /* Pagination buttons */
+  .ag-paging-button {
+    min-width: 36px !important;
+    padding: 4px 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Page size selector */
+  .ag-paging-page-size {
+    order: 4 !important;
+    width: 100% !important;
+    justify-content: center !important;
+    margin-top: 8px !important;
+    display: flex !important;
+  }
+
+  /* Ensure pagination panel wraps properly */
+  .ag-paging-panel > * {
+    flex-shrink: 0 !important;
+  }
+
+  /* Make sure all pagination text elements are visible */
+  .ag-paging-panel span {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Ensure page summary panel content is visible */
+  .ag-paging-page-summary-panel span.ag-paging-description {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+}

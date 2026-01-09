@@ -6,13 +6,24 @@ import "ag-grid-community/styles/ag-theme-quartz.css"
 import moment from 'moment';
 import { getUniqueRecord } from '@/app/_services/service';
 
-const pagination = true;
 const paginationPageSize = 10;
 const paginationPageSizeSelector = [25, 50, 75, 100];
 
 function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
-
+  const [isMobile, setIsMobile] = useState(false);
   const [rowData, setRowData] = useState();
+
+  // Detect screen size for responsive pagination
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   const [colDefs, setColDefs] = useState([
     { field: 'studentId' },
     { field: 'name' }
@@ -70,7 +81,7 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
         <AgGridReact
           rowData={rowData}
           columnDefs={colDefs}
-          pagination={pagination}
+          pagination={!isMobile}
           paginationPageSize={paginationPageSize}
           paginationPageSizeSelector={paginationPageSizeSelector}
         />
