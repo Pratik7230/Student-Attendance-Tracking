@@ -237,6 +237,8 @@
 import { db } from "@/utils";
 import { ATTENDANCE, GRADES, STUDENTS, SUBJECTS } from "@/utils/schema";
 import { and, eq } from "drizzle-orm";
+import chromium from "@sparticuz/chromium";
+import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
 
 export const getUniqueRecord = (attendanceList) => {
@@ -438,10 +440,26 @@ export async function GET(req) {
     }
     html += `</body></html>`;
 
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    // Configure Chromium for serverless (Vercel/Lambda)
+    const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
+    
+    let browser;
+    if (isProduction) {
+      // Use serverless-optimized Chromium for Vercel
+      chromium.setGraphicsMode(false);
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    } else {
+      // Use local Puppeteer for development
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+    }
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0" });
     const pdfBuffer = await page.pdf({ 
