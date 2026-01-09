@@ -446,7 +446,6 @@ export async function GET(req) {
     let browser;
     if (isProduction) {
       // Use serverless-optimized Chromium for Vercel
-      chromium.setGraphicsMode(false);
       browser = await puppeteerCore.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
