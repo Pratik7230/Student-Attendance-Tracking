@@ -241,6 +241,8 @@ import chromium from "@sparticuz/chromium";
 import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
 
+export const dynamic = "force-dynamic";
+
 export const getUniqueRecord = (attendanceList) => {
   const uniqueRecord = [];
   const existingUser = new Set();
