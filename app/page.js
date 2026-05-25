@@ -76,13 +76,7 @@ export default function Home() {
       })
   };
 
-  // useEffect(() => {
-  //   setEmail("saggy835+1@gmail.com")
-  //   setPassword("Admin#1234")
-  // }, [])
-
   const forgotPassword = () => {
-    //toast.error("Redirecting to forgot password page...");
     router.push("forgot-password")
   };
 

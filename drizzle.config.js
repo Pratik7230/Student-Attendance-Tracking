@@ -24,19 +24,4 @@ export default {
           }
         : {}),
     },
-
   };
-
-
-// export default {
-//   schema: "./utils/schema.js", // Path to your schema file
-//   dialect: "mysql", // Specify the database dialect
-//   driver: "mysql2",
-//   dbCredentials: {
-//     host: "sql12.freemysqlhosting.net",
-//     user: "sql12758314",
-//     database: "sql12758314",
-//     password:'Hz1iZ9caUJ',
-//     port:'3306',
-//   },
-// };
