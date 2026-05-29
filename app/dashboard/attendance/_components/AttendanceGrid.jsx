@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -36,7 +36,7 @@ function AttendanceGrid({
     const year = moment(selectedMonth).format('YYYY');
     const month = moment(selectedMonth).format('MM');
     return new Date(year, month, 0).getDate();
-  }, []);
+  }, [selectedMonth]);
 
   const daysArray = useMemo(
     () =>
@@ -49,6 +49,14 @@ function AttendanceGrid({
           ).getDay() !== 0
       ),
     [numberOfDays, selectedMonth]
+  );
+
+  const isPresent = useCallback(
+    (studentId, day) =>
+      attendanceList?.some(
+        (item) => item.day === day && item.studentId === studentId
+      ) ?? false,
+    [attendanceList]
   );
 
   useEffect(() => {
@@ -88,12 +96,7 @@ function AttendanceGrid({
     });
 
     setRowData(enrichedStudents);
-  }, [attendanceList, daysArray, subjectId]);
-
-  const isPresent = (studentId, day) =>
-    attendanceList.some(
-      (item) => item.day === day && item.studentId === studentId
-    );
+  }, [attendanceList, daysArray, subjectId, selectedMonth, isPresent]);
 
   const onMarkAttendance = (day, studentId, presentStatus) => {
     const date = moment(selectedMonth).format('MM/YYYY');

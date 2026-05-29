@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -61,6 +61,7 @@ function AdminPage() {
   const [grades, setGrades] = useState([]);
   const [bulkStudents, setBulkStudents] = useState([]);
   const [students, setStudents] = useState([]); // State to store student data
+  const [studentList, setStudentList] = useState([]);
 
   const [subjects, setSubjects] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
@@ -93,22 +94,17 @@ function AdminPage() {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  useEffect(() => {
-    fetchUsers();
-    fetchGrades();
-    fetchStudents(); // Fetch students data on component mount
-  }, []);
 
-  const fetchGrades = async () => {
+  const fetchGrades = useCallback(async () => {
     try {
       const response = await GlobalApi.GetAllGrades();
       setGrades(response.data);
     } catch (error) {
       toast.error('Failed to fetch grades');
     }
-  };
+  }, []);
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     try {
       const response = await GlobalApi.GetAllStudents();
       if (response.data) {
@@ -124,24 +120,17 @@ function AdminPage() {
     } catch (error) {
       toast.error('Failed to fetch students');
     }
-  };
+  }, [grades]);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
-  useEffect(() => {
-    fetchSubjects();
-  }, []);
-
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       const response = await GlobalApi.GetAllSubjects();
       setSubjects(response.data); // Ensure response.data is an array of subjects
     } catch (error) {
       console.error('Failed to fetch subjects', error);
     }
-  };
+  }, []);
 
   const handleCheckboxChange = (subjectId) => {
     setSelectedSubjects(
@@ -152,7 +141,7 @@ function AdminPage() {
     );
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await GlobalApi.GetUsers();
       if (response.data) {
@@ -166,7 +155,7 @@ function AdminPage() {
     } catch (error) {
       toast.error('Failed to fetch users');
     }
-  };
+  }, []);
 
   const addUser = async (data) => {
     try {
@@ -212,17 +201,28 @@ function AdminPage() {
     });
   };
 
-  const [studentList, setStudentList] = useState([]);
-
-  useEffect(() => {
-    GetAllStudents();
-  }, []);
-
-  const GetAllStudents = () => {
+  const GetAllStudents = useCallback(() => {
     GlobalApi.GetAllStudents().then((resp) => {
       setStudentList(resp.data);
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
+    fetchGrades();
+  }, [fetchUsers, fetchGrades]);
+
+  useEffect(() => {
+    fetchStudents();
+  }, [fetchStudents]);
+
+  useEffect(() => {
+    fetchSubjects();
+  }, [fetchSubjects]);
+
+  useEffect(() => {
+    GetAllStudents();
+  }, [GetAllStudents]);
 
   return (
     <div className="p-3 md:p-6 bg-gray-100 min-h-screen">

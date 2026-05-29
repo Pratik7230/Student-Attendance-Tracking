@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier . --write",
     "db:push": "npx drizzle-kit push",
-    "db:studio": "npx drizzle-kit studio",
-    "format": "prettier . --write"
+    "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.4",
@@ -57,6 +57,9 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.35",
+    "eslint-config-prettier": "^10.1.8",
     "postcss": "^8",
     "prettier": "^3.8.3",
     "tailwindcss": "^3.4.1"

@@ -5,6 +5,7 @@ import GlobalApi from './_services/GlobalApi';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Cookies from 'js-cookie';
 import AnimatedSpin from './_components/AnimatedSpin';
 import { GlobalDataService } from './_services/globalDataService';
@@ -99,10 +100,13 @@ export default function Home() {
       <div className="w-full max-w-md p-4 md:p-8 space-y-4 md:space-y-6 bg-white dark:bg-gray-800 shadow-lg rounded-xl">
         <form className="space-y-3 md:space-y-4" onSubmit={handleSubmit}>
           <div className="flex justify-center">
-            <img
+            <Image
               src="/logo.svg"
               alt="Login Logo"
+              width={220}
+              height={96}
               className="w-40 h-16 md:w-55 md:h-24 object-contain"
+              priority
             />
           </div>
           <div>

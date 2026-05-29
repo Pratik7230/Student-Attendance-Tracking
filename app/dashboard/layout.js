@@ -4,7 +4,7 @@ import SideNav from './_components/SideNav';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 
-function layout({ children }) {
+function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -47,4 +47,4 @@ function layout({ children }) {
   );
 }
 
-export default layout;
+export default Layout;

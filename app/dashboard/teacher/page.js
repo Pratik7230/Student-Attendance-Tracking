@@ -1,6 +1,6 @@
 'use client';
 import { useTheme } from 'next-themes';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import MonthSelection from '../../_components/MonthSelection';
 import GradeSelect from '../../_components/GradeSelect';
 import GlobalApi from '../../_services/GlobalApi';
@@ -19,18 +19,7 @@ function Dashboard() {
   const [selectedSubjectId, setSelectedSubjectId] = useState();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (selectedMonth && selectedSubjectId && selectedGradeId) {
-      GetTotalPresentCountByDay();
-      getStudentAttendance();
-    }
-  }, [selectedMonth, selectedGradeId, selectedSubjectId]);
-
-  useEffect(() => {
-    setSelectedMonth(new Date());
-  }, []);
-
-  const getStudentAttendance = () => {
+  const getStudentAttendance = useCallback(() => {
     setLoading(true);
     GlobalApi.GetAttendanceList(
       selectedGradeId,
@@ -42,9 +31,9 @@ function Dashboard() {
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, [selectedGradeId, selectedMonth]);
 
-  const GetTotalPresentCountByDay = () => {
+  const GetTotalPresentCountByDay = useCallback(() => {
     setLoading(true);
     GlobalApi.TotalPresentCountByDay(
       moment(selectedMonth).format('MM/yyyy'),
@@ -57,7 +46,24 @@ function Dashboard() {
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, [selectedMonth, selectedGradeId, selectedSubjectId]);
+
+  useEffect(() => {
+    if (selectedMonth && selectedSubjectId && selectedGradeId) {
+      GetTotalPresentCountByDay();
+      getStudentAttendance();
+    }
+  }, [
+    selectedMonth,
+    selectedGradeId,
+    selectedSubjectId,
+    GetTotalPresentCountByDay,
+    getStudentAttendance,
+  ]);
+
+  useEffect(() => {
+    setSelectedMonth(new Date());
+  }, []);
 
   return (
     <div className="p-3 md:p-10">

@@ -71,7 +71,7 @@ const GetUsers = () => axios.get('/api/user');
 const AddUser = (data) => axios.post('/api/user', data);
 const DeleteUser = (id) => axios.delete(`/api/user?id=${id}`);
 
-export default {
+const GlobalApi = {
   GetAllGrades,
   CreateNewStudent,
   GetAllStudents,
@@ -100,3 +100,5 @@ export default {
   GetStudentSubjects,
   UpdateTeacherSubjects,
 };
+
+export default GlobalApi;

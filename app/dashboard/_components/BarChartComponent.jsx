@@ -1,5 +1,5 @@
 import { getUniqueRecord } from '@/app/_services/service';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -14,11 +14,7 @@ import {
 function BarChartComponent({ attendanceList, totalPresentData }) {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    formatAttendanceListCount();
-  }, [attendanceList, totalPresentData]);
-
-  const formatAttendanceListCount = () => {
+  const formatAttendanceListCount = useCallback(() => {
     const totalStudent = getUniqueRecord(attendanceList);
 
     if (!totalStudent || !totalPresentData) {
@@ -36,7 +32,11 @@ function BarChartComponent({ attendanceList, totalPresentData }) {
 
     console.log(result);
     setData(result);
-  };
+  }, [attendanceList, totalPresentData]);
+
+  useEffect(() => {
+    formatAttendanceListCount();
+  }, [formatAttendanceListCount]);
 
   return (
     <div className="p-5 border rounded-lg shadow-sm">

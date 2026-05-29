@@ -1,5 +1,5 @@
 //app/dashboard/attendance/_componets/AttendanceGrid.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -30,11 +30,21 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
   ]);
 
   const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
-  const numberOfDays = daysInMonth(
-    moment(selectedMonth).format('yyyy'),
-    moment(selectedMonth).format('MM')
+  const daysArrays = useMemo(() => {
+    const numberOfDays = daysInMonth(
+      moment(selectedMonth).format('yyyy'),
+      moment(selectedMonth).format('MM')
+    );
+    return Array.from({ length: numberOfDays }, (_, i) => i + 1);
+  }, [selectedMonth]);
+
+  const isPresent = useCallback(
+    (studentId, day) =>
+      attendanceList?.some(
+        (item) => item.day == day && item.studentId == studentId
+      ) ?? false,
+    [attendanceList]
   );
-  const daysArrays = Array.from({ length: numberOfDays }, (_, i) => i + 1);
 
   useEffect(() => {
     if (attendanceList) {
@@ -60,20 +70,7 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
 
       setRowData(uniqueStudents);
     }
-  }, [attendanceList, selectedMonth, subjectId]);
-
-  /**
-   * use to check user is present or not
-   * @param {*} studentId
-   * @param {*} day
-   * @returns
-   */
-  const isPresent = (studentId, day) => {
-    const result = attendanceList.find(
-      (item) => item.day == day && item.studentId == studentId
-    );
-    return result ? true : false;
-  };
+  }, [attendanceList, daysArrays, isPresent]);
 
   return (
     <div>
