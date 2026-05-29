@@ -1,44 +1,48 @@
-"use client";
-import React, { useState } from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { FileStack } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import * as XLSX from "xlsx";
-import AnimatedSpin from "@/app/_components/AnimatedSpin";
+'use client';
+import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { FileStack } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
+import * as XLSX from 'xlsx';
+import AnimatedSpin from '@/app/_components/AnimatedSpin';
 
 function BulkStudent({ refreshData }) {
   const [openBulkStudentDialog, setOpenBulkStudentDialog] = useState(false);
   const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false)
-  
+  const [loading, setLoading] = useState(false);
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-  
+
     if (!selectedFile) return;
-  
+
     const validTypes = [
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
-      "application/vnd.ms-excel" // .xls
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      'application/vnd.ms-excel', // .xls
     ];
-  
+
     if (!validTypes.includes(selectedFile.type)) {
-      toast.error("Invalid file type. Only .xlsx and .xls files are allowed.");
-      event.target.value = ""; // Clear input
+      toast.error('Invalid file type. Only .xlsx and .xls files are allowed.');
+      event.target.value = ''; // Clear input
       setFile(null);
       return;
     }
-  
+
     setFile(selectedFile);
   };
-  
 
   const uploadBulkStudents = async (event) => {
     event.preventDefault();
 
     if (!file) {
-      toast.error("Please select an Excel file.");
+      toast.error('Please select an Excel file.');
       return;
     }
 
@@ -46,7 +50,7 @@ function BulkStudent({ refreshData }) {
     const reader = new FileReader();
     reader.onload = async (e) => {
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
+      const workbook = XLSX.read(data, { type: 'array' });
 
       // Get first sheet
       const sheetName = workbook.SheetNames[0];
@@ -65,30 +69,29 @@ function BulkStudent({ refreshData }) {
         contact: student.Contact,
       }));
 
-
-      console.log("formattedStudents", formattedStudents)
+      console.log('formattedStudents', formattedStudents);
 
       try {
-        setLoading(true)
-        const response = await fetch("/api/student", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        setLoading(true);
+        const response = await fetch('/api/student', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formattedStudents),
         });
 
         if (response.ok) {
-          toast.success("Students uploaded successfully!");
+          toast.success('Students uploaded successfully!');
           setOpenBulkStudentDialog(false);
           setFile(null);
           refreshData();
         } else {
-          toast.error("Upload failed. Please check the file format.");
+          toast.error('Upload failed. Please check the file format.');
         }
       } catch (error) {
-        toast.error("Error uploading students.");
-        console.error("Upload Error:", error);
+        toast.error('Error uploading students.');
+        console.error('Upload Error:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -96,7 +99,10 @@ function BulkStudent({ refreshData }) {
   };
 
   return (
-    <Dialog open={openBulkStudentDialog} onOpenChange={setOpenBulkStudentDialog}>
+    <Dialog
+      open={openBulkStudentDialog}
+      onOpenChange={setOpenBulkStudentDialog}
+    >
       <DialogTrigger asChild>
         <Button>
           <FileStack className="w-4 h-4" /> Bulk Upload
@@ -105,7 +111,13 @@ function BulkStudent({ refreshData }) {
       <DialogContent>
         <DialogTitle>Bulk Student Upload</DialogTitle>
         <form onSubmit={uploadBulkStudents} className="space-y-4">
-          <Input disabled={loading} type="file" accept=".xlsx, .xls" onChange={handleFileChange} required />
+          <Input
+            disabled={loading}
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={handleFileChange}
+            required
+          />
           <AnimatedSpin loading={loading}>
             <Button type="submit">Upload Students</Button>
           </AnimatedSpin>

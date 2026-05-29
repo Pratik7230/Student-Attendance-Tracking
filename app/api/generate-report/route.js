@@ -38,7 +38,6 @@
 //   });
 // }
 
-
 // function groupByDate(data) {
 //   return data.reduce((acc, item) => {
 //     (acc[item.date] = acc[item.date] || []).push(item);
@@ -127,7 +126,6 @@
 //     </head>
 //     <body>`
 
-
 //     const groupedData = groupByDate(result)
 
 //     for (const key in groupedData) {
@@ -158,7 +156,7 @@
 //             <span>Month: ${key}</span>
 //             <span>Subject: ${subject}</span>
 //         </div>
-        
+
 //         <table>
 //             <tr>
 //                 <th>ID</th>
@@ -183,7 +181,7 @@
 //                 </tr>
 //             `).join("")}
 //         </table>
-        
+
 //         <div class="signatures">
 //             <span>Incharge Sign</span>
 //             <span>HOD Sign</span>
@@ -191,10 +189,6 @@
 //         </div>`
 //       }
 //     }
-
-
-
-
 
 //     html += `</body></html>`;
 
@@ -227,27 +221,20 @@
 //   }
 // }
 
+import { db } from '@/utils';
+import { ATTENDANCE, GRADES, STUDENTS, SUBJECTS } from '@/utils/schema';
+import { and, eq } from 'drizzle-orm';
+import chromium from '@sparticuz/chromium';
+import puppeteerCore from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 
-
-
-
-
-
-
-import { db } from "@/utils";
-import { ATTENDANCE, GRADES, STUDENTS, SUBJECTS } from "@/utils/schema";
-import { and, eq } from "drizzle-orm";
-import chromium from "@sparticuz/chromium";
-import puppeteerCore from "puppeteer-core";
-import puppeteer from "puppeteer";
-
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export const getUniqueRecord = (attendanceList) => {
   const uniqueRecord = [];
   const existingUser = new Set();
 
-  attendanceList?.forEach(record => {
+  attendanceList?.forEach((record) => {
     if (!existingUser.has(record.studentId)) {
       existingUser.add(record.studentId);
       uniqueRecord.push(record);
@@ -258,21 +245,23 @@ export const getUniqueRecord = (attendanceList) => {
 };
 
 const isPresent = (attendanceList, studentId, day) => {
-  const result = attendanceList.find(item => item.day == day && item.studentId == studentId);
+  const result = attendanceList.find(
+    (item) => item.day == day && item.studentId == studentId
+  );
   return result ? true : false;
 };
 
 function filterByDateRange(data, from, to) {
   const parseDate = (str) => {
     if (!str) return null;
-    const [month, year] = str.split("/");
+    const [month, year] = str.split('/');
     return new Date(`${year}-${month}-01`);
   };
 
   const fromDate = parseDate(from);
   const toDate = parseDate(to);
 
-  return data.filter(item => {
+  return data.filter((item) => {
     if (!item.date) return false;
     const itemDate = parseDate(item.date);
     return itemDate && itemDate >= fromDate && itemDate <= toDate;
@@ -291,23 +280,27 @@ function groupByDate(data) {
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const gradeId = searchParams.get("gradeId");
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
-    const selectedSubjectId = searchParams.get("selectedSubjectId");
+    const gradeId = searchParams.get('gradeId');
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+    const selectedSubjectId = searchParams.get('selectedSubjectId');
 
     // Validate required parameters
     if (!gradeId || !from || !to || !selectedSubjectId) {
-      return new Response(JSON.stringify({ error: "Missing required parameters" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameters' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
-    const subject = await db.select({ name: SUBJECTS.name })
+    const subject = await db
+      .select({ name: SUBJECTS.name })
       .from(SUBJECTS)
       .where(eq(SUBJECTS.id, selectedSubjectId))
-      .then(res => res[0]?.name || "Unknown");
+      .then((res) => res[0]?.name || 'Unknown');
 
     const db_result = await db
       .select({
@@ -321,10 +314,13 @@ export async function GET(req) {
       })
       .from(STUDENTS)
       .innerJoin(GRADES, eq(STUDENTS.gradeId, GRADES.id))
-      .leftJoin(ATTENDANCE, and(
-        eq(STUDENTS.id, ATTENDANCE.studentId),
-        eq(ATTENDANCE.subjectId, selectedSubjectId)
-      ))
+      .leftJoin(
+        ATTENDANCE,
+        and(
+          eq(STUDENTS.id, ATTENDANCE.studentId),
+          eq(ATTENDANCE.subjectId, selectedSubjectId)
+        )
+      )
       .where(and(eq(STUDENTS.gradeId, gradeId)));
 
     const result = filterByDateRange(db_result, from, to);
@@ -370,29 +366,39 @@ export async function GET(req) {
             }
         </style>
     </head>
-    <body>`
+    <body>`;
 
     const groupedData = groupByDate(result);
-    
+
     // Check if there's any data to process
     if (Object.keys(groupedData).length === 0) {
-      return new Response(JSON.stringify({ error: "No attendance data found for the selected date range" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({
+          error: 'No attendance data found for the selected date range',
+        }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
     }
 
     for (const key in groupedData) {
       if (Object.prototype.hasOwnProperty.call(groupedData, key)) {
-        const [month, year] = key.split("/");
+        const [month, year] = key.split('/');
         const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
         const numberOfDays = daysInMonth(Number(year), Number(month));
-        const daysArrays = Array.from({ length: numberOfDays }, (_, i) => i + 1)
-          .filter(day => new Date(Number(year), Number(month) - 1, day).getDay() !== 0); // Skip Sundays
+        const daysArrays = Array.from(
+          { length: numberOfDays },
+          (_, i) => i + 1
+        ).filter(
+          (day) => new Date(Number(year), Number(month) - 1, day).getDay() !== 0
+        ); // Skip Sundays
 
         const uniqueStudents = getUniqueRecord(groupedData[key]);
         uniqueStudents.forEach((obj) => {
-          let totalP = 0, totalA = 0;
+          let totalP = 0,
+            totalA = 0;
           daysArrays.forEach((date) => {
             obj[date] = isPresent(groupedData[key], obj.studentId, date);
             if (obj[date]) totalP++;
@@ -413,38 +419,47 @@ export async function GET(req) {
             <tr>
                 <th>ID</th>
                 <th>Student Name</th>
-                ${daysArrays.map(x => `<th>${x}</th>`).join("")}
+                ${daysArrays.map((x) => `<th>${x}</th>`).join('')}
                 <th>Total P</th>
                 <th>Total A</th>
                 <th> Sign </th>
             </tr>
-            ${uniqueStudents.map(student => `
+            ${uniqueStudents
+              .map(
+                (student) => `
                 <tr>
                     <td>${student.studentId}</td>
                     <td>${student.name}</td>
-                    ${daysArrays.map(day => `
+                    ${daysArrays
+                      .map(
+                        (day) => `
                         <td style="background-color:${!student[day] ? 'rgb(255, 150, 150)' : 'rgb(166, 253, 193)'}">
-                            ${student[day] ? "P" : "A"}
+                            ${student[day] ? 'P' : 'A'}
                         </td>
-                    `).join("")}
+                    `
+                      )
+                      .join('')}
                     <td><b>${student.totalP}</b></td>
                     <td><b>${student.totalA}</b></td>
                     <td></td>
                 </tr>
-            `).join("")}
+            `
+              )
+              .join('')}
         </table>
         <div class="signatures">
             <span>Incharge Sign</span>
             <span>HOD Sign</span>
         </div>
-        </div>`
+        </div>`;
       }
     }
     html += `</body></html>`;
 
     // Configure Chromium for serverless (Vercel/Lambda)
-    const isProduction = process.env.VERCEL || process.env.NODE_ENV === 'production';
-    
+    const isProduction =
+      process.env.VERCEL || process.env.NODE_ENV === 'production';
+
     let browser;
     if (isProduction) {
       // Use serverless-optimized Chromium for Vercel
@@ -458,29 +473,38 @@ export async function GET(req) {
       // Use local Puppeteer for development
       browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
     }
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({ 
-      format: "A4", 
-      landscape: true, 
-      printBackground: true, 
-      margin: { top: "10mm", right: "10mm", bottom: "10mm", left: "5mm" } 
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      landscape: true,
+      printBackground: true,
+      margin: { top: '10mm', right: '10mm', bottom: '10mm', left: '5mm' },
     });
     await browser.close();
 
-    return new Response(pdfBuffer, { status: 200, headers: { "Content-Type": "application/pdf", "Content-Disposition": "attachment; filename=attendance_report.pdf" } });
-  } catch (error) {
-    console.error("Error generating PDF:", error);
-    return new Response(JSON.stringify({ 
-      error: "Internal Server Error", 
-      message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    }), { 
-      status: 500, 
-      headers: { "Content-Type": "application/json" } 
+    return new Response(pdfBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=attendance_report.pdf',
+      },
     });
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    return new Response(
+      JSON.stringify({
+        error: 'Internal Server Error',
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 }

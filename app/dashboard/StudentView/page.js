@@ -1,28 +1,30 @@
-"use client";
-import GradeSelect from "@/app/_components/GradeSelect";
-import MonthSelection from "@/app/_components/MonthSelection";
-import GlobalApi from "@/app/_services/GlobalApi";
-import { Button } from "@/components/ui/button";
-import moment from "moment";
-import React, { useState } from "react";
-import AttendanceGrid from "./_components/AttendanceGrid";
-import StudentSubjectSelect from "@/app/_components/StudentSubjectSelect";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
+'use client';
+import GradeSelect from '@/app/_components/GradeSelect';
+import MonthSelection from '@/app/_components/MonthSelection';
+import GlobalApi from '@/app/_services/GlobalApi';
+import { Button } from '@/components/ui/button';
+import moment from 'moment';
+import React, { useState } from 'react';
+import AttendanceGrid from './_components/AttendanceGrid';
+import StudentSubjectSelect from '@/app/_components/StudentSubjectSelect';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 function Attendance() {
   const [selectedMonth, setSelectedMonth] = useState();
   const [selectedSubjectId, setSelectedSubjectId] = useState(); // ✅ Fix: Added state for subject
   const [attendanceList, setAttendanceList] = useState();
-//.....
+  //.....
   // Fetch attendance list for given month, grade, and subject
   const onSearchHandler = () => {
-    const token = Cookies.get("token")
-    const { id } = jwtDecode(token)
-    const month = moment(selectedMonth).format("MM/YYYY");
-    GlobalApi.GetStudentAttendanceList(id, month, selectedSubjectId).then((resp) => {
-      setAttendanceList(resp.data);
-    });
+    const token = Cookies.get('token');
+    const { id } = jwtDecode(token);
+    const month = moment(selectedMonth).format('MM/YYYY');
+    GlobalApi.GetStudentAttendanceList(id, month, selectedSubjectId).then(
+      (resp) => {
+        setAttendanceList(resp.data);
+      }
+    );
   };
 
   return (
@@ -32,22 +34,36 @@ function Attendance() {
       {/* Search Options */}
       <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-5 my-3 md:my-5 p-3 md:p-5 border rounded-lg shadow-sm">
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-          <label className="text-sm md:text-base whitespace-nowrap">Select Month:</label>
+          <label className="text-sm md:text-base whitespace-nowrap">
+            Select Month:
+          </label>
           <MonthSelection selectedMonth={(value) => setSelectedMonth(value)} />
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-          <label className="text-sm md:text-base whitespace-nowrap">Select Subject:</label>
-          <StudentSubjectSelect selectedSubjectId={(v) => setSelectedSubjectId(v)} />
+          <label className="text-sm md:text-base whitespace-nowrap">
+            Select Subject:
+          </label>
+          <StudentSubjectSelect
+            selectedSubjectId={(v) => setSelectedSubjectId(v)}
+          />
         </div>
 
         <div className="w-full sm:w-auto">
-          <Button onClick={onSearchHandler} className="w-full sm:w-auto text-sm md:text-base">Search</Button>
+          <Button
+            onClick={onSearchHandler}
+            className="w-full sm:w-auto text-sm md:text-base"
+          >
+            Search
+          </Button>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <AttendanceGrid attendanceList={attendanceList} selectedMonth={selectedMonth} />
+        <AttendanceGrid
+          attendanceList={attendanceList}
+          selectedMonth={selectedMonth}
+        />
       </div>
     </div>
   );

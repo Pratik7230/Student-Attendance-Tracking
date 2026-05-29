@@ -1,11 +1,11 @@
-"use client"
-import React, { useState } from 'react'
-import SideNav from './_components/SideNav'
-import { Button } from '@/components/ui/button'
-import { Menu } from 'lucide-react'
+'use client';
+import React, { useState } from 'react';
+import SideNav from './_components/SideNav';
+import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
 
 function layout({ children }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="relative">
@@ -23,24 +23,28 @@ function layout({ children }) {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setMobileMenuOpen(false)}>
-          <div className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <div
+            className="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <SideNav isMobile={true} onClose={() => setMobileMenuOpen(false)} />
           </div>
         </div>
       )}
 
       {/* Desktop Sidebar */}
-      <div className='hidden md:block md:w-64 fixed h-screen z-30'>
+      <div className="hidden md:block md:w-64 fixed h-screen z-30">
         <SideNav />
       </div>
 
       {/* Main Content */}
-      <div className='md:ml-64 min-h-screen pt-16 md:pt-0'>
-        {children}
-      </div>
+      <div className="md:ml-64 min-h-screen pt-16 md:pt-0">{children}</div>
     </div>
-  )
+  );
 }
 
-export default layout
+export default layout;

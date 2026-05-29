@@ -1,19 +1,30 @@
-"use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { toast } from "sonner";
-import GlobalApi from "@/app/_services/GlobalApi";
+'use client';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
+import { toast } from 'sonner';
+import GlobalApi from '@/app/_services/GlobalApi';
 
 const roleMap = {
-  1: "Admin",
-  2: "Teacher",
-  4: "Class Teacher",
-  5: "HOD",
-  6: "Principal",
+  1: 'Admin',
+  2: 'Teacher',
+  4: 'Class Teacher',
+  5: 'HOD',
+  6: 'Principal',
 };
 
 function AddUser({ refreshData }) {
@@ -23,7 +34,7 @@ function AddUser({ refreshData }) {
   const addUser = async (data) => {
     try {
       if (!data.role) {
-        toast.error("Please select a role");
+        toast.error('Please select a role');
         return;
       }
 
@@ -35,35 +46,42 @@ function AddUser({ refreshData }) {
       };
 
       await GlobalApi.AddUser(payload);
-      toast.success("User added successfully");
+      toast.success('User added successfully');
       setOpenUserDialog(false);
       reset();
       refreshData(); // Refresh user list
     } catch (error) {
-      toast.error("Failed to add user");
+      toast.error('Failed to add user');
     }
   };
 
   return (
     <Dialog open={openUserDialog} onOpenChange={setOpenUserDialog}>
       <DialogTrigger asChild>
-        <Button>
-          + Add User
-        </Button>
+        <Button>+ Add User</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Add Admin/Teacher</DialogTitle>
         <form onSubmit={handleSubmit(addUser)} className="space-y-4">
-          <Input placeholder="Name" {...register("name", { required: true })} />
-          <Input placeholder="Email" {...register("email", { required: true })} />
-          <Input placeholder="Password" type="password" {...register("password", { required: true })} />
-          <Select onValueChange={(value) => setValue("role", value)}>
+          <Input placeholder="Name" {...register('name', { required: true })} />
+          <Input
+            placeholder="Email"
+            {...register('email', { required: true })}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            {...register('password', { required: true })}
+          />
+          <Select onValueChange={(value) => setValue('role', value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Role" />
             </SelectTrigger>
             <SelectContent>
               {Object.entries(roleMap).map(([id, role]) => (
-                <SelectItem key={id} value={id}>{role}</SelectItem>
+                <SelectItem key={id} value={id}>
+                  {role}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>

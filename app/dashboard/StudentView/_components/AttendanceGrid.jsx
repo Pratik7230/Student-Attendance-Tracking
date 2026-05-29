@@ -1,8 +1,8 @@
 //app/dashboard/attendance/_componets/AttendanceGrid.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css"
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 import moment from 'moment';
 import { getUniqueRecord } from '@/app/_services/service';
 
@@ -18,19 +18,22 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
-    
+
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
   const [colDefs, setColDefs] = useState([
     { field: 'studentId' },
-    { field: 'name' }
+    { field: 'name' },
   ]);
 
   const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
-  const numberOfDays = daysInMonth(moment(selectedMonth).format('yyyy'), moment(selectedMonth).format('MM'));
+  const numberOfDays = daysInMonth(
+    moment(selectedMonth).format('yyyy'),
+    moment(selectedMonth).format('MM')
+  );
   const daysArrays = Array.from({ length: numberOfDays }, (_, i) => i + 1);
 
   useEffect(() => {
@@ -44,8 +47,8 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
       }));
 
       setColDefs([
-        { field: "studentId", headerName: "Student ID" },
-        { field: "name", headerName: "Name" },
+        { field: 'studentId', headerName: 'Student ID' },
+        { field: 'name', headerName: 'Name' },
         ...dynamicCols,
       ]);
 
@@ -59,24 +62,28 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
     }
   }, [attendanceList, selectedMonth, subjectId]);
 
-
   /**
    * use to check user is present or not
-   * @param {*} studentId 
-   * @param {*} day 
-   * @returns 
+   * @param {*} studentId
+   * @param {*} day
+   * @returns
    */
   const isPresent = (studentId, day) => {
-    const result = attendanceList.find(item => item.day == day && item.studentId == studentId)
-    return result ? true : false
-  }
-
+    const result = attendanceList.find(
+      (item) => item.day == day && item.studentId == studentId
+    );
+    return result ? true : false;
+  };
 
   return (
     <div>
       <div
-        className='ag-theme-quartz w-full overflow-auto'
-        style={{ height: 'calc(100vh - 300px)', minHeight: 400, maxHeight: 600 }}
+        className="ag-theme-quartz w-full overflow-auto"
+        style={{
+          height: 'calc(100vh - 300px)',
+          minHeight: 400,
+          maxHeight: 600,
+        }}
       >
         <AgGridReact
           rowData={rowData}
@@ -87,7 +94,7 @@ function AttendanceGrid({ attendanceList, selectedMonth, subjectId }) {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default AttendanceGrid
+export default AttendanceGrid;
