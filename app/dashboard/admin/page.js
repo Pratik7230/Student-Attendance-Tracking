@@ -94,7 +94,6 @@ function AdminPage() {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-
   const fetchGrades = useCallback(async () => {
     try {
       const response = await GlobalApi.GetAllGrades();
@@ -121,7 +120,6 @@ function AdminPage() {
       toast.error('Failed to fetch students');
     }
   }, [grades]);
-
 
   const fetchSubjects = useCallback(async () => {
     try {
