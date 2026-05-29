@@ -1,18 +1,18 @@
-"use client";
-import GradeSelect from "@/app/_components/GradeSelect";
-import MonthSelection from "@/app/_components/MonthSelection";
-import GlobalApi from "@/app/_services/GlobalApi";
-import { Button } from "@/components/ui/button";
-import moment from "moment";
-import React, { useState } from "react";
-import TeacherSubjectSelect from "@/app/_components/TeacherSubjectSelect";
-import AnimatedSpin from "@/app/_components/AnimatedSpin";
-import { Tooltip } from "recharts";
+'use client';
+import GradeSelect from '@/app/_components/GradeSelect';
+import MonthSelection from '@/app/_components/MonthSelection';
+import GlobalApi from '@/app/_services/GlobalApi';
+import { Button } from '@/components/ui/button';
+import moment from 'moment';
+import React, { useState } from 'react';
+import TeacherSubjectSelect from '@/app/_components/TeacherSubjectSelect';
+import AnimatedSpin from '@/app/_components/AnimatedSpin';
+import { Tooltip } from 'recharts';
 
 function GenerateReport() {
   // Initialize with current month for both start and end dates
   const currentMonth = moment().startOf('month').toDate();
-  
+
   const [selectedStartMonth, setSelectedStartMonth] = useState(currentMonth);
   const [selectedEndMonth, setSelectedEndMonth] = useState(currentMonth);
   const [selectedGrade, setSelectedGrade] = useState();
@@ -21,21 +21,22 @@ function GenerateReport() {
 
   // Fetch attendance list for given month, grade, and subject
   const onSearchHandler = () => {
-    const from = moment(selectedStartMonth).format("MM/YYYY");
-    const to = moment(selectedEndMonth).format("MM/YYYY");
-    setLoading(true)
+    const from = moment(selectedStartMonth).format('MM/YYYY');
+    const to = moment(selectedEndMonth).format('MM/YYYY');
+    setLoading(true);
     GlobalApi.GenerateReport(selectedGrade, from, to, selectedSubjectId)
       .then((response) => {
-        const blob = new Blob([response.data], { type: "application/pdf" });
+        const blob = new Blob([response.data], { type: 'application/pdf' });
         // Create a download link
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = `Attendence_Report_${new Date().toISOString()}.pdf`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link); // Cleanup
-      }).finally(() => {
-        setLoading(false)
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -46,29 +47,54 @@ function GenerateReport() {
       <div>
         <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-5 my-3 md:my-5 p-3 md:p-5 border rounded-lg shadow-sm">
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-            <label className="text-sm md:text-base whitespace-nowrap">Select Start Month:</label>
-            <MonthSelection defaultMonth={selectedStartMonth} selectedMonth={(value) => setSelectedStartMonth(value)} />
+            <label className="text-sm md:text-base whitespace-nowrap">
+              Select Start Month:
+            </label>
+            <MonthSelection
+              defaultMonth={selectedStartMonth}
+              selectedMonth={(value) => setSelectedStartMonth(value)}
+            />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-            <label className="text-sm md:text-base whitespace-nowrap">Select End Month:</label>
-            <MonthSelection defaultMonth={selectedEndMonth} selectedMonth={(value) => setSelectedEndMonth(value)} />
+            <label className="text-sm md:text-base whitespace-nowrap">
+              Select End Month:
+            </label>
+            <MonthSelection
+              defaultMonth={selectedEndMonth}
+              selectedMonth={(value) => setSelectedEndMonth(value)}
+            />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-            <label className="text-sm md:text-base whitespace-nowrap">Select Subject:</label>
-            <TeacherSubjectSelect selectedSubjectId={(v) => setSelectedSubjectId(v)} />
+            <label className="text-sm md:text-base whitespace-nowrap">
+              Select Subject:
+            </label>
+            <TeacherSubjectSelect
+              selectedSubjectId={(v) => setSelectedSubjectId(v)}
+            />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
-            <label className="text-sm md:text-base whitespace-nowrap">Select Grade:</label>
-            <GradeSelect selectedSubjectId={selectedSubjectId} selectedGrade={(v) => setSelectedGrade(v)} />
+            <label className="text-sm md:text-base whitespace-nowrap">
+              Select Grade:
+            </label>
+            <GradeSelect
+              selectedSubjectId={selectedSubjectId}
+              selectedGrade={(v) => setSelectedGrade(v)}
+            />
           </div>
 
           <div className="w-full sm:w-auto">
             <AnimatedSpin loading={loading}>
-              <Button 
-                disabled={!(selectedSubjectId && selectedGrade && selectedStartMonth <= selectedEndMonth)} 
+              <Button
+                disabled={
+                  !(
+                    selectedSubjectId &&
+                    selectedGrade &&
+                    selectedStartMonth <= selectedEndMonth
+                  )
+                }
                 onClick={onSearchHandler}
                 className="w-full sm:w-auto text-sm md:text-base"
               >
@@ -78,10 +104,8 @@ function GenerateReport() {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 
 export default GenerateReport;
-
-

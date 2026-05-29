@@ -22,22 +22,22 @@ Role-based attendance tracking app for schools and colleges. Admins manage users
 ## Getting Started
 
 1. Install dependencies:
-	```bash
-	npm install
-	```
+   ```bash
+   npm install
+   ```
 2. Create a local environment file:
-	```bash
-	copy env.sample .env
-	```
+   ```bash
+   copy env.sample .env
+   ```
 3. Fill in the database and email values in `.env`.
 4. Push the database schema:
-	```bash
-	npm run db:push
-	```
+   ```bash
+   npm run db:push
+   ```
 5. Start the dev server:
-	```bash
-	npm run dev
-	```
+   ```bash
+   npm run dev
+   ```
 6. Open http://localhost:3000
 
 ## Environment Variables
@@ -68,7 +68,7 @@ Set these in `.env` (see `env.sample`):
 - app/: routes, pages, and UI
 - app/api/: API routes (attendance, auth, reports)
 - app/dashboard/: role-specific dashboards
-- app/_components/: shared client components
+- app/\_components/: shared client components
 - utils/schema.js: Drizzle schema definitions
 - drizzle.config.js: Drizzle configuration
 - lib/email-util.js: email helper for OTP

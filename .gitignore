@@ -38,3 +38,4 @@ next-env.d.ts
 app/admin/temp.ts
 
 .env
+.prettierignore
